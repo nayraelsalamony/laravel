@@ -32,7 +32,7 @@
         </div>
         <div class="mb-3">
           <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="created_at"></textarea>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="descreption"></textarea>
         </div>
         <button type="submit" class="btn btn-success">Create Post</button>
         <br>
@@ -40,8 +40,10 @@
         <div class="mb-3">
           <label for="exampleFormControlTextarea1" class="form-label">Post Creator</label>
           <br>
-          <select class="form-control" rows="3" name="posted_by">
-            <option> Ahmade</option>
+          <select class="form-control" rows="3" name="creator">
+           @foreach ($users as $user)
+           <option value="{{$user->id}}"> {{$user->name}} </option>
+           @endforeach
           </select>
         </div>
     </form>

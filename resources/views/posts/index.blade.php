@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title')</title>
+    <title>lap2</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 </head>
 <body>
@@ -28,8 +28,9 @@
       <tr>
         <th scope="col">#</th>
         <th scope="col">Titel</th>
-        <th scope="col">Posted by </th>
-        <th scope="col">Created at </th>
+        <th scope="col">descrption </th>
+        <th scope="col">Posted_by </th>
+        <th scope="col">created_at </th>
         <th scope="col">Action </th>
       </tr>
     </thead>
@@ -38,13 +39,17 @@
       <tr>
         <td>{{$post['id']}}</th>
         <td>{{$post['title']}}</td>
-        <td>{{$post['posted_by']}}</td>
+        <td>{{$post['descreption']}}</td>
+        <td>{{$post['creator']}}</td>
         <td>{{$post['created_at']}}</td>
         <td>
           <a href="{{route('posts.show', ['post' => $post['id']])}}" class="btn btn-info">View</a>
           <a href="/posts/{{$post['id']}}/edit" class="btn btn-primary">Edit</a>
-          <!-- <a href="{{route('posts.delete',['post' => $post['id']])}}" class="btn btn-danger">delete</a> -->
-          <button onclick="return confirm('you want to delet this post ?')" type="button" class="btn btn-danger mr-2">Delete</button>
+          <form action="{{ route('posts.delete',['post' => $post['id']]) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button onClick="if(!confirm('Is the form filled out correctly?')){return false;}" type="submit" class="btn btn-danger mr-2">Delete</button>
+                </form>
         </td>
       </tr>
       @endforeach

@@ -22,30 +22,28 @@
         </div>
       </nav>
     <div class="container">
-        @foreach ($filteredPost as $post){
-        <form>
-            <div class="mb-3">
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Title</label>
-                    <input name="title" type="text" class="form-control" id="exampleFormControlInput1">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="created_at"></textarea>
-                </div>
-                <button type="submit" class="btn btn-success">Create Post</button>
-                <br>
-                <br>
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Post Creator</label>
-                    <br>
-                    <select class="form-control" rows="3" name="posted_by">
-                        <option> Ahmade</option>
-                    </select>
-                </div>
-        </form>
+    <form action="{{ route('posts.update',['post' => $postShow['id']]) }}" method="POST">
+    @csrf
+    @method('PUT')
+    <div class="my-5">
+        <label class="form-label">Title</label>
+        <input type="text" class="form-control" name="title" value="{{$postShow->title}}">
+    </div>
+    <div class="mb-5">
+        <label class="form-label d-block">Description</label>
+        <textarea rows="5" name="descreption" class="w-100 form-control">{{$postShow->description}}</textarea>
+    </div>
+    <div class="mb-5">
+        <label class="form-label d-block">Post Creator</label>
+        <select class="w-100 form-control" name="creator">
+            @foreach ($creators as $creator){
+            <option value="{{$creator->id}}"> {{$creator->name}} </option>
+            @endforeach
 
-        @endforeach
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+</form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

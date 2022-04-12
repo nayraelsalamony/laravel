@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
+use function GuzzleHttp\Promise\all;
 class PostController extends Controller
 {   
-   private  $posts = [
-        ['id' => 1, 'title' => 'first post', 'posted_by' => 'ahmed', 'created_at' => '2022-04-11'],
-        ['id' => 2, 'title' => 'second post', 'posted_by' => 'mohamed', 'created_at' => '2022-04-11'],
-    ];
+   private  $posts = [];
     public function index()
     {
-        
+        $this->posts =Post::all();
+        // dd( $this->posts);
         return view('posts.index',[
             'allPosts' => $this->posts ,
         ]);
@@ -20,30 +21,30 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('posts.create');
+        $users=User::all();
+        return view('posts.create',[
+            'users' => $users ]);
     }
 
     public function store()
     {
-       $post=[
-           "id"=>count($this->posts )+1 ,
-           "title"=>request()["title"],
-           "posted_by"=>request()["posted_by"],
-           "created_at"=>request()["created_at"]
-
-       ];
-       array_push($this->posts,$post);
-       return view('posts.index',[
-        'allPosts' => $this->posts ,
-    ]);
+       $post=request()->all();
+    //    dd( $post);
+       Post::create([
+           'title'=>$post['title'],
+           'descreption'=>$post['descreption'],
+           'user_id'=>$post['creator']
+           ,
+           'creator'=>$post['creator']
+       ]);
+       return to_route('posts.index');
     }
 
     public function show($id)
-    {
+    {    
         $id = (int)$id;
-        $filteredPost = array_filter($this->posts, function ($post) use ($id) {
-            return $post["id"] === $id;
-        });
+        // dd($id);
+        $filteredPost=Post::find($id);
         //  dd($filteredPost);
         return view('posts.show', [
             "filteredPost" => $filteredPost
@@ -51,22 +52,31 @@ class PostController extends Controller
         
     }
     public function edit($id)
-    {
-        $id = (int)$id;
-        $filteredPost = array_filter($this->posts, function ($post) use ($id) {
-            return $post["id"] === $id;
-        });
-
+    { $postShow = Post::find($id);
+        $creators = User::all();
         return view('posts.update', [
-            "filteredPost" => $filteredPost
+            "postShow" => $postShow,
+            "creators" => $creators
         ]);
-    }
+}
+
     public function update($id)
     {
-        return "updated";
+        $updatedPost = Post::find($id);
+        
+        $data = request()->post();
+       
+        $updatedPost->title = $data['title'];
+        $updatedPost->descreption = $data['descreption'];
+        $updatedPost-> creator= $data['creator'];
+        $updatedPost->save();
+        return to_route('posts.index'); 
     }
     public function delete($id)
     {
-        return view('delete');
+        
+        $user = Post::find($id);
+        $user->delete();
+        return to_route('posts.index');
     }
 }
