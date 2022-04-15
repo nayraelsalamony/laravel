@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,10 +14,10 @@ class PostController extends Controller
    private  $posts = [];
     public function index()
     {
-        $this->posts =Post::all();
-        // dd( $this->posts);
+        $posts = Post::paginate(10);
+        // $this->posts =Post::all();
         return view('posts.index',[
-            'allPosts' => $this->posts ,
+            'allPosts' => $posts ,
         ]);
     }
 
@@ -26,10 +28,9 @@ class PostController extends Controller
             'users' => $users ]);
     }
 
-    public function store()
+    public function store(StorePostRequest $request)
     {
        $post=request()->all();
-    //    dd( $post);
        Post::create([
            'title'=>$post['title'],
            'descreption'=>$post['descreption'],
@@ -60,16 +61,14 @@ class PostController extends Controller
         ]);
 }
 
-    public function update($id)
+    public function update(UpdatePostRequest $request,Post $post)
     {
-        $updatedPost = Post::find($id);
-        
+
         $data = request()->post();
-       
-        $updatedPost->title = $data['title'];
-        $updatedPost->descreption = $data['descreption'];
-        $updatedPost-> creator= $data['creator'];
-        $updatedPost->save();
+        $post->title = $data['title'];
+        $post->descreption = $data['descreption'];
+        $post-> creator= $data['creator'];
+        $post->save();
         return to_route('posts.index'); 
     }
     public function delete($id)
