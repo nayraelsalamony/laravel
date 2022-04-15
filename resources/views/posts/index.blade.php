@@ -21,7 +21,7 @@
         <td>{{$post['id']}}</th>
         <td>{{$post['title']}}</td>
         <td>{{$post['descreption']}}</td>
-        <td>{{$post->user}}</td>    
+        <td>{{$post['creator']}}</td>    
         <td>{{$post['created_at']->format('Y-m-d')}}</td>
         <td>
           <a href="{{route('posts.show', ['post' => $post['id']])}}" class="btn btn-info">View</a>
