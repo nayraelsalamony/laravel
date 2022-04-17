@@ -31,12 +31,19 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
        $post=request()->all();
+
+        if (request()->hasFile('image')) {
+            $destination_path = '/storage/app/public/images';
+            $image =request()->file('image');
+            $image_name = $image->getClientOriginalName();
+            $path =request()->file('image')->storeAs($destination_path, $image_name);
+            $post['image'] = $image_name;
+        }
        Post::create([
            'title'=>$post['title'],
            'descreption'=>$post['descreption'],
-           'user_id'=>$post['creator']
-           ,
-           'creator'=>$post['creator']
+           'creator'=>$post['creator'],
+           'image' => $post['image']
        ]);
        return to_route('posts.index');
     }
@@ -63,7 +70,7 @@ class PostController extends Controller
 
     public function update(UpdatePostRequest $request,Post $post)
     {
-
+           
         $data = request()->post();
         $post->title = $data['title'];
         $post->descreption = $data['descreption'];

@@ -12,6 +12,7 @@
         <th scope="col">descrption </th>
         <th scope="col">Posted_by </th>
         <th scope="col">created_at </th>
+        <th scope="col">images </th>
         <th scope="col">Action </th>
       </tr>
     </thead>
@@ -23,6 +24,7 @@
         <td>{{$post['descreption']}}</td>
         <td>{{$post['creator']}}</td>    
         <td>{{$post['created_at']->format('Y-m-d')}}</td>
+        <td><img height="100px" src="{{asset('/storage/app/public/images/'.$post->image)}}" alt="test"/></td>
         <td>
           <a href="{{route('posts.show', ['post' => $post['id']])}}" class="btn btn-info">View</a>
           <a href="/posts/{{$post['id']}}/edit" class="btn btn-primary">Edit</a>
