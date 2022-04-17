@@ -22,7 +22,8 @@ class Post extends Model
         "descreption",
         'user_id',
         'creator',
-        'image'
+        'image',
+        // 'created_at'
        
     ];
      
