@@ -22,7 +22,7 @@
         <td>{{$post['id']}}</th>
         <td>{{$post['title']}}</td>
         <td>{{$post['descreption']}}</td>
-        <td>{{$post['creator']}}</td>    
+        <td>{{$post->user ? $post->user->name : "notfound"}}</td> 
         <td>{{$post['created_at']->format('Y-m-d')}}</td>
         <td><img height="100px" src="{{asset('/storage/app/public/images/'.$post->image)}}" alt="test"/></td>
         <td>
